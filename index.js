@@ -9,6 +9,7 @@ const http = require("http");
 const server = http.createServer(app);
 const public = path.join(__dirname, "/public");
 const io = socketIo(server);
+const multer = require("multer");
 
 
 app.set('view engine', 'ejs').use(express.json()).use(express.static(path.join(__dirname, "/public")));
