@@ -52,8 +52,8 @@ app.post("/connection", (req,res)=>{
         console.log(salt);
         console.log(hashed);
 
-        const insert = `INSERT INTO user(pseudo,password) 
-        VALUES ("${req.body.pseudoConnexion}", "${hashed}" );`;
+        const insert = `INSERT INTO user(pseudo,password, connect) 
+        VALUES ("${req.body.pseudoConnexion}", "${hashed}", ${false} );`;
 
         connection.query(insert, function (error, results, fields) {
           if (error) throw error;
