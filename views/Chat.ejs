@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+</head>
+  <body>
+    <h2>Chat</h2>
+    <!-- <h3><%= id %></h3> -->
+
+    <div class ="menu">
+      <a href="" title="Créer un compte" id="creerCompte">Créer un compte</a>
+      <a href="" title="Connexion" id="connexion">Se connecter</a>
+      <a href="" title="Déconnexion" id="deconnexion">Se déconnecter</a>
+    </div>
+
+    <div class = "salon">
+
+    <table>
+      <caption> Salons </caption>
+      <tr>
+          <td>Général</td>
+      </tr>
+      <!-- liste des groupes auxquel appartient le user -->
+      <tr>
+        <td></td>
+      </tr>
+  </table>
+  </div>
+
+  <div class = "listeMsg">
+  <!-- actualiser historique messages en  fonction du groupe choisi -->
+
+  </div>
+
+  <div class = "envoiMsg">
+    <label for="message">Message</label>
+    <textarea type="text" name="message" id="message" placeholder="message" maxlength="350" required cols="50" rows="3"> </textarea>
+    <input type = "submit" name="envoiMsg" id="envoiMsg" value="Envoyer"/>
+  </div>
+    
+  </body>
+</html>
