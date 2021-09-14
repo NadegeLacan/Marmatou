@@ -90,6 +90,15 @@ app.post("/connection", (req,res)=>{
 }
 });
 
+app.post("/addProfilpic", (req,res)=>{
+
+
+
+
+});
+
+
+
 
 
 server.listen(8080, () => console.log("Server running"));
