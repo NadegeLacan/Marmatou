@@ -4,7 +4,8 @@
   "description": "chat",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/NadegeLacan/Marmatou/issues"
   },
-  "homepage": "https://github.com/NadegeLacan/Marmatou#readme"
+  "homepage": "https://github.com/NadegeLacan/Marmatou#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
 }
