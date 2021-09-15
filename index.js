@@ -74,7 +74,7 @@ app.post("/connection", (req, res) => {
       if (err) throw err;
 
       if (result.length === 0) {
-        // console.log("here1");
+        
         res.status(401).render("index.ejs", { info: "Wrong credentials " });
       } else {
         //check si la password est correct
@@ -145,7 +145,7 @@ io.on("connection", (socket) => {
 
 
   socket.on("newMsg", (data) => {
-    console.log(data);
+ 
 
     const select = `SELECT  pseudo from user WHERE id = ${socket.handshake.query.id}`;
     const query = `

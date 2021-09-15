@@ -156,7 +156,7 @@
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("salons :", data);
+            
             data.forEach(element => {
               createSalon(element.nom, element.id);
             });
@@ -177,7 +177,7 @@
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
+           
             data.forEach(element=>{
               createMsg(element.contenu, element.id_user, element.pseudo);
             });
