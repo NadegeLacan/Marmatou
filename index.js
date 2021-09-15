@@ -10,10 +10,11 @@ const server = http.createServer(app);
 const public = path.join(__dirname, "/public");
 const io = socketIo(server);
 const multer = require("multer");
+const fs = require("fs");
 
 
 app.set('view engine', 'ejs').use(express.json()).use(express.static(path.join(__dirname, "/public")));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); 
 
 
 
@@ -26,7 +27,7 @@ const connection = mysql.createConnection({
 });
 
 const upload = multer({
-  dest: "C:/Users/Utilisateur/Documents/GitHub/Marmatou/temp"
+  dest: "C:/Users/antoi/Documents/GitHub/Marmatou/uploads"
   
 });
 
@@ -46,10 +47,9 @@ connection.connect((err) => {
 
 app.get(`/`, (req,res)=>{
   res.render("index.ejs", {info:""});
-});
-
-
-app.post("/connection", (req,res)=>{
+}).get('/connection/:id', (req, res) => {
+  res.render(__dirname + '/Chat.ejs', { id: req.params.id});
+}).post("/connection", (req,res)=>{
   console.log(req.body);
 
   if(req.body.creationCompte){
@@ -103,27 +103,35 @@ app.post("/connection", (req,res)=>{
     }
   })
 }
-});
+}).post("/addProfilpic", upload.single("inputPhoto"), (req,res)=>{ 
 
-app.post("/addProfilpic", upload.single("profilPicEntry"), (req,res)=>{
+  const id = req.body["prodId"];
+  console.log("ok");
+  console.log(req.file);
+  console.log("fs console log ")
+  console.log(fs.rename);
+  let hasError = Uploadimage(req.body["prodId"], req.file.path, `public/media/profil-pic/`);
 
-  let hasError = Uploadimage(req.body["prodId"], req.file.path, `public/media/profil-picture/`);
-           
   if (hasError ) {
       return handleError(err, res);
   } else {
       res.status(200)
           .contentType("text/plain")
           .end("File uploaded!");
-
-
+  }
 });
+
+   
+
+
+
 
 
 function Uploadimage ( id, fPath, tPath ) {
   /* fonction ajout d'image */ 
-
+  
   const targetPath = path.join(__dirname,`${tPath}${id}.jpg`);
+ 
 
   fs.rename(fPath, targetPath, err => {
       if (err) {
