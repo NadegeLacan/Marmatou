@@ -33,7 +33,7 @@ app.get(`/`, (req, res) => {
 });
 
 app.post("/connection", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   if (req.body.creationCompte) {
     const query = `SELECT * FROM user WHERE pseudo = "${req.body.pseudoConnexion}";`;
@@ -47,8 +47,8 @@ app.post("/connection", (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(req.body.pwdConnexion, salt);
 
-        console.log(salt);
-        console.log(hashed);
+        // console.log(salt);
+        // console.log(hashed);
 
         const insert = `INSERT INTO user(pseudo,password, connect) 
         VALUES ("${req.body.pseudoConnexion}", "${hashed}", ${false} );`;
@@ -66,7 +66,7 @@ app.post("/connection", (req, res) => {
       if (err) throw err;
 
       if (result.length === 0) {
-        console.log("here1");
+        // console.log("here1");
         res.status(401).render("index.ejs", { info: "Wrong credentials " });
       } else {
         bcrypt.compare(
@@ -74,12 +74,12 @@ app.post("/connection", (req, res) => {
           result[0].password,
           (err, compare) => {
             if (err) throw err;
-            console.log("compare", compare);
+            // console.log("compare", compare);
             if (compare) {
-              console.log("here2");
+              // console.log("here2");
               res.status(200).render("chat.ejs", { id: result[0].id });
             } else {
-              console.log("here3");
+              // console.log("here3");
               res
                 .status(401)
                 .render("index.ejs", { info: "Wrong credentials" });
@@ -91,15 +91,74 @@ app.post("/connection", (req, res) => {
   }
 });
 
+app.get("/messages", (req, res) => {
+  console.log("receiver:", req.headers.receiver);
+
+  const query = `
+  SELECT * FROM messages 
+  INER JOIN salon 
+    ON salon.id = message.id_salon
+  WHERE  salon.nom= ${req.headers.salon};`;
+
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+  });
+});
+
+app.get("/salons", (req, res) => {
+  const query = `
+  SELECT nom FROM salons;`;
+
+  connection.query(query, (err, results) => {
+    if (err) throw err;
+  });
+});
+
 // SOCKET CONNECTIONS
 
 io.on("connection", (socket) => {
-  console.log("hdshfakl");
-  console.log();
+  // console.log("hdshfakl");
+  // console.log();
+
+  socket.on("createSalon", (data) => {
+    const checkSalon = `SELECT * FROM salon WHERE nom= "${data.name}";`;
+    const insertSalon = `
+    INSERT INTO salon(nom)
+    VALUES("${data.name}");`;
+
+    connection.query(checkSalon, (err, resultCheck) => {
+      if (err) throw err;
+      // console.log(resultCheck);
+      // console.log("gshjdfjsd", resultCheck.length);
+      if (resultCheck.length === 0) {
+        // console.log("im in");
+        connection.query(insertSalon, (error, resultInsert) => {
+          if (error) throw error;
+          // console.log("inserResult: ", resultInsert);
+          // console.log("ID: ", resultInsert.insertId);
+
+          const insertClient = `
+            INSERT INTO appartenir()
+            VALUES(${resultInsert.insertId}, ${socket.handshake.query.id})`;
+
+          // console.log(insertClient);
+
+          connection.query(insertClient, (error3, resultAppartenir) => {
+            if (error3) throw error3;
+            // console.log("inserted");
+
+            io.emit("newGroup", { name: data.name });
+
+            //TODO: recevoir event dans le client, BONNE APETIT
+          });
+        });
+      }
+    });
+  });
 
   socket.on("newMsg", (data) => {
-    console.log("jdshfkjfgsdf");
-    console.log(data);
+    // console.log("jdshfkjfgsdf");
+    // console.log(data);
     const select = `SELECT  pseudo from user WHERE id = ${socket.handshake.query.id}`;
     const query = `
     INSERT INTO message (contenu, spoiler, format_code, id_user)
@@ -107,7 +166,7 @@ io.on("connection", (socket) => {
 
     connection.query(select, (err, resultsSelect) => {
       if (err) throw err;
-      console.log(resultsSelect[0].pseudo);
+      // console.log(resultsSelect[0].pseudo);
 
       connection.query(query, (error, resultsInsert) => {
         if (error) throw error;

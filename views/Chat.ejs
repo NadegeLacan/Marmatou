@@ -16,25 +16,26 @@
       <a href="" title="Déconnexion" id="deconnexion">Se déconnecter</a>
     </div>
 
-    <div class="salon">
+    <div class="salonContainer">
       <table>
         <caption>
           Salons
         </caption>
-        <tr></tr>
+        <tr class="salon"></tr>
 
-        <form class="salonForm">
-          <input
-            type="text"
-            name="salonName"
-            id="salonName"
-            placeholder="Nom salon"
-            required
-          />
-          <input type="submit" id="creerSalon" />
-        </form>
         <!-- liste des groupes auxquel appartient le user -->
       </table>
+
+      <form class="salonForm">
+        <input
+          type="text"
+          name="salonName"
+          id="salonName"
+          placeholder="Nom salon"
+          required
+        />
+        <input type="submit" id="creerSalon" />
+      </form>
     </div>
 
     <div class="msgListContainer">
@@ -59,43 +60,89 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const sessionId = <%= id %>;
-      const socket = io("http://localhost:8080", {query:{id: sessionId}});
-      const msgForm = document.querySelector(".submitMsg");
-      const msgList = document.querySelector(".listeMsg");
-      const msg = document.querySelector("#message");
-      const salon = document.querySelector(".salon");
-      const buttonSalon = document.querySelector("#creerSalon");
+          const sessionId = <%= id %>;
+          const socket = io("http://localhost:8080", {query:{id: sessionId}});
+          const msgForm = document.querySelector(".submitMsg");
+          const msgList = document.querySelector(".listeMsg");
+          const msg = document.querySelector("#message");
+          const salon = document.querySelector(".salon");
+          const buttonSalon = document.querySelector("#creerSalon");
+          const salonName = document.querySelector("#salonName");
+
+          async function fetchSalons(){
+            await fetch("http://localhost:8080/salons", {
+            method: "GET",
+            headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            receiver: sessionId,
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("salons :", data);
+          });
+          }
 
 
-      msgForm.addEventListener("submit", (e)=>{
-        e.preventDefault();
-        console.log("sent");
-        console.log(msg.value);
-        socket.emit("newMsg", {msg:msg.value, sender: sessionId} );
-        createMsg(msg.value, sessionId);
-        msg.value="";
-      });
+          async function  fetchMessages(salon){
 
-      buttonSalon.addEventListener("click", (e)=>{
-        e.preventDefault();
-        socket.emit("createSalon");
-      })
-
-      socket.on("msgIncoming", (data)=>{
-
-        createMsg(data.msg, data.id);
-
-      })
-
-
-      function createMsg(msg, id){
-        let li = document.createElement("li");
-        li.classList.add(id == sessionId ? "ownMsg" : "receivedMsg");
-        li.innerText = msg;
-        msgList.append(li);
-        msgList.scrollTop = msgList.scrollHeight - msgList.clientHeight;
+            await fetch("http://localhost:8080/messages", {
+            method: "GET",
+            headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            receiver: sessionId,
+            salon:salon
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("msg:", data);
+          });
       }
+
+        fetchMessages();
+          msgForm.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            console.log("sent");
+            console.log(msg.value);
+            socket.emit("newMsg", {msg:msg.value, sender: sessionId} );
+            createMsg(msg.value, sessionId);
+            msg.value="";
+          });
+
+          buttonSalon.addEventListener("click", (e)=>{
+            e.preventDefault();
+            socket.emit("createSalon", {name: salonName.value});
+            salonName.value="";
+          })
+
+          socket.on("msgIncoming", (data)=>{
+
+            createMsg(data.msg, data.id);
+
+          });
+
+          socket.on("newGroup", (data)=>{
+            const group= document.createElement("td");
+            const buttonGroup= document.createElement("button");
+            group.innerText= data.name;
+
+            buttonGroup.addEventListener("click", ()=>{
+
+            })
+            salon.append(group);
+          })
+
+
+          function createMsg(msg, id){
+            let li = document.createElement("li");
+            li.classList.add(id == sessionId ? "ownMsg" : "receivedMsg");
+            li.innerText = msg;
+            msgList.append(li);
+            msgList.scrollTop = msgList.scrollHeight - msgList.clientHeight;
+          }
     </script>
   </body>
 </html>
