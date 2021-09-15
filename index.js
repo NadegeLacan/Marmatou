@@ -95,22 +95,26 @@ app.get("/messages", (req, res) => {
   console.log("receiver:", req.headers.receiver);
 
   const query = `
-  SELECT * FROM messages 
-  INER JOIN salon 
-    ON salon.id = message.id_salon
-  WHERE  salon.nom= ${req.headers.salon};`;
+  SELECT * FROM message 
+  
+  WHERE id_salon= ${req.headers.salon};`;
 
   connection.query(query, (err, results) => {
     if (err) throw err;
+    console.log("res:", results);
+    res.send(results);
   });
 });
 
 app.get("/salons", (req, res) => {
   const query = `
-  SELECT nom FROM salons;`;
+  SELECT nom, id FROM salon;`;
 
   connection.query(query, (err, results) => {
     if (err) throw err;
+
+    console.log(results);
+    res.send(results);
   });
 });
 
@@ -147,7 +151,7 @@ io.on("connection", (socket) => {
             if (error3) throw error3;
             // console.log("inserted");
 
-            io.emit("newGroup", { name: data.name });
+            io.emit("newGroup", { name: data.name, id: resultInsert.insertId });
 
             //TODO: recevoir event dans le client, BONNE APETIT
           });
@@ -161,8 +165,10 @@ io.on("connection", (socket) => {
     // console.log(data);
     const select = `SELECT  pseudo from user WHERE id = ${socket.handshake.query.id}`;
     const query = `
-    INSERT INTO message (contenu, spoiler, format_code, id_user)
-    VALUES("${data.msg}", ${false}, ${false}, ${socket.handshake.query.id} )  `;
+    INSERT INTO message (contenu, spoiler, format_code, id_user, id_salon)
+    VALUES("${data.msg}", ${false}, ${false}, ${socket.handshake.query.id}, ${
+      data.salonId
+    } ) ; `;
 
     connection.query(select, (err, resultsSelect) => {
       if (err) throw err;

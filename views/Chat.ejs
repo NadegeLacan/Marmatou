@@ -68,6 +68,9 @@
           const salon = document.querySelector(".salon");
           const buttonSalon = document.querySelector("#creerSalon");
           const salonName = document.querySelector("#salonName");
+          let salonId= 1 ;
+
+
 
           async function fetchSalons(){
             await fetch("http://localhost:8080/salons", {
@@ -75,40 +78,47 @@
             headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            receiver: sessionId,
           },
         })
           .then((res) => res.json())
           .then((data) => {
             console.log("salons :", data);
+            data.forEach(element => {
+              createSalon(element.nom, element.id);
+            });
           });
-          }
+        }
 
 
-          async function  fetchMessages(salon){
+          async function  fetchMessages(salonId){
 
+            msgList.innerHTML= "";
             await fetch("http://localhost:8080/messages", {
             method: "GET",
             headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             receiver: sessionId,
-            salon:salon
+            salon:salonId
           },
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log("msg:", data);
+            data.forEach(element=>{
+              createMsg(element.contenu, element.id_user);
+            });
           });
       }
 
-        fetchMessages();
+        fetchMessages(salonId);
+        fetchSalons();
+
           msgForm.addEventListener("submit", (e)=>{
             e.preventDefault();
             console.log("sent");
             console.log(msg.value);
-            socket.emit("newMsg", {msg:msg.value, sender: sessionId} );
-            createMsg(msg.value, sessionId);
+            socket.emit("newMsg", {msg:msg.value, sender: sessionId, salonId:salonId} );
+            createMsg(msg.value, sessionId, salon);
             msg.value="";
           });
 
@@ -118,6 +128,9 @@
             salonName.value="";
           })
 
+
+            // SOCKETS
+
           socket.on("msgIncoming", (data)=>{
 
             createMsg(data.msg, data.id);
@@ -125,16 +138,25 @@
           });
 
           socket.on("newGroup", (data)=>{
+            console.log(data);
+
+            createSalon(data.name, data.id);
+          })
+
+
+          function createSalon(name, id){
             const group= document.createElement("td");
             const buttonGroup= document.createElement("button");
-            group.innerText= data.name;
+            buttonGroup.innerText= name;
 
             buttonGroup.addEventListener("click", ()=>{
 
+              salonId= id;
+              fetchMessages(salonId);
             })
+            group.append(buttonGroup);
             salon.append(group);
-          })
-
+          }
 
           function createMsg(msg, id){
             let li = document.createElement("li");
