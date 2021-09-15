@@ -42,21 +42,26 @@
       <!-- actualiser historique messages en  fonction du groupe choisi -->
     </div>
 
-    <div class="envoiMsg">
-      <form class="submitMsg">
-        <label for="message">Message</label>
-        <input
-          type="text"
-          name="message"
-          id="message"
-          placeholder="message"
-          maxlength="300"
-          required
-        />
+    <div id='msgBox'>
+      <div class="envoiMsg">
+        <form class="submitMsg">
+          <label for="message">Message</label>
+          <input
+            type="text"
+            name="message"
+            id="message"
+            placeholder="message"
+            maxlength="300"
+            required
+          />
 
-        <input type="submit" name="envoiMsg" id="envoiMsg" value="Envoyer" />
-      </form>
+          <input type="submit" name="envoiMsg" id="envoiMsg" value="Envoyer" />
+        </form>
+      </div>
+      <button type="button" id="codeFormat"> Format Code</button>
     </div>
+
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const sessionId = <%= id %>;
@@ -66,6 +71,30 @@
       const msg = document.querySelector("#message");
       const salon = document.querySelector(".salon");
       const buttonSalon = document.querySelector("#creerSalon");
+
+      // const msgValue = document.querySelector('msg.value');
+
+      let btn = document.querySelector('#codeFormat'); 
+      let p = document.querySelector('p');
+      let selection;
+      
+
+
+      btn.addEventListener("click", e =>{
+
+        function textSelection(event) {
+          selection = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd);
+      }
+      if (selection !== ''){
+        msg.value.innerHTML.replace(msg.value, '<code>' + msg.value + '</code>');
+      }else{
+        msg.value.innerHTML.replace(msg.value, '<code>' + msg.value + '</code>');
+      }
+      console.log(selection);
+    });
+
+
+
 
 
       msgForm.addEventListener("submit", (e)=>{
