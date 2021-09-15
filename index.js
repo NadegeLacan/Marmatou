@@ -9,6 +9,7 @@ const http = require("http");
 const server = http.createServer(app);
 const public = path.join(__dirname, "/public");
 const io = socketIo(server);
+const multer = require("multer");
 
 
 app.set('view engine', 'ejs').use(express.json()).use(express.static(path.join(__dirname, "/public")));
@@ -23,6 +24,20 @@ const connection = mysql.createConnection({
   password: "",
   database: "blabla",
 });
+
+const upload = multer({
+  dest: "C:/Users/Utilisateur/Documents/GitHub/Marmatou/temp"
+  
+});
+
+const handleError = (err, res) => {
+  res
+    .status(500)
+    .contentType("text/plain")
+    .end(err + "<br>Oops! Something went wrong!");
+};
+
+
 
 connection.connect((err) => {
   if (err) throw err;
@@ -90,14 +105,34 @@ app.post("/connection", (req,res)=>{
 }
 });
 
-app.post("/addProfilpic", (req,res)=>{
+app.post("/addProfilpic", upload.single("profilPicEntry"), (req,res)=>{
 
-
+  let hasError = Uploadimage(req.body["prodId"], req.file.path, `public/media/profil-picture/`);
+           
+  if (hasError ) {
+      return handleError(err, res);
+  } else {
+      res.status(200)
+          .contentType("text/plain")
+          .end("File uploaded!");
 
 
 });
 
 
+function Uploadimage ( id, fPath, tPath ) {
+  /* fonction ajout d'image */ 
+
+  const targetPath = path.join(__dirname,`${tPath}${id}.jpg`);
+
+  fs.rename(fPath, targetPath, err => {
+      if (err) {
+          return false;
+      } else {
+          return true;
+      }
+  });
+}
 
 
 
