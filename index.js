@@ -92,7 +92,7 @@ app.post("/connection", (req, res) => {
 });
 
 app.get("/messages", (req, res) => {
-  console.log("receiver:", req.headers.receiver);
+  // console.log("receiver:", req.headers.receiver);
 
   const query = `
   SELECT * FROM message 
@@ -101,7 +101,7 @@ app.get("/messages", (req, res) => {
 
   connection.query(query, (err, results) => {
     if (err) throw err;
-    console.log("res:", results);
+    // console.log("res:", results);
     res.send(results);
   });
 });
@@ -113,7 +113,7 @@ app.get("/salons", (req, res) => {
   connection.query(query, (err, results) => {
     if (err) throw err;
 
-    console.log(results);
+    // console.log(results);
     res.send(results);
   });
 });
@@ -123,6 +123,20 @@ app.get("/salons", (req, res) => {
 io.on("connection", (socket) => {
   // console.log("hdshfakl");
   // console.log();
+  socket.rooms.forEach((room) => {
+    socket.leave(room);
+  });
+
+  socket.join("general");
+
+  socket.on("changeSalon", (data) => {
+    socket.rooms.forEach((room) => {
+      socket.leave(room);
+    });
+
+    socket.join(data.salonId);
+    console.log("room:", socket.rooms);
+  });
 
   socket.on("createSalon", (data) => {
     const checkSalon = `SELECT * FROM salon WHERE nom= "${data.name}";`;
@@ -177,7 +191,7 @@ io.on("connection", (socket) => {
       connection.query(query, (error, resultsInsert) => {
         if (error) throw error;
 
-        socket.broadcast.emit("msgIncoming", {
+        socket.broadcast.to(data.salonId).emit("msgIncoming", {
           msg: data.msg,
           senderID: data.sender,
           senderPseudo: resultsSelect[0].pseudo,

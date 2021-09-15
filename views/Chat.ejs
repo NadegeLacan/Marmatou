@@ -70,8 +70,6 @@
           const salonName = document.querySelector("#salonName");
           let salonId= 1 ;
 
-
-
           async function fetchSalons(){
             await fetch("http://localhost:8080/salons", {
             method: "GET",
@@ -118,7 +116,7 @@
             console.log("sent");
             console.log(msg.value);
             socket.emit("newMsg", {msg:msg.value, sender: sessionId, salonId:salonId} );
-            createMsg(msg.value, sessionId, salon);
+            // createMsg(msg.value, sessionId, salon);
             msg.value="";
           });
 
@@ -132,8 +130,8 @@
             // SOCKETS
 
           socket.on("msgIncoming", (data)=>{
-
-            createMsg(data.msg, data.id);
+            console.log("je devrais pas courrir")
+            createMsg(data.msg, data.id, data.senderPseudo);
 
           });
 
@@ -153,6 +151,7 @@
 
               salonId= id;
               fetchMessages(salonId);
+              socket.emit("changeSalon", {salonId:salonId})
             })
             group.append(buttonGroup);
             salon.append(group);
