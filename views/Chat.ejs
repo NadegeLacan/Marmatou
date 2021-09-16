@@ -130,7 +130,10 @@
 
               buttonSalon.addEventListener("click", (e)=>{
                 e.preventDefault();
-                if(salonName.value==="") return; // vu que required dans l'input n'a pas envie de marcher
+                if(salonName.value==="") {
+                alert("Le nom de salon doit être renseigné");
+                return;
+                } // vu que required dans l'input n'a pas envie de marcher
                 socket.emit("createSalon", {name: salonName.value});
                 salonName.value="";
               })
@@ -166,14 +169,13 @@
                 if(id != sessionId){
                   li.classList.add("receivedMsg");
                   let span = document.createElement("span");
-                  span.innerText= pseudo;
+                  span.innerText= pseudo + " ";
                   span.classList.add("sender");
                   li.append(span);
                 }else{
                   li.classList.add("ownMsg" );
                 }
                 let text = document.createTextNode(msg);
-
                 li.append(text);
                 msgList.append(li);
                 // msgList.scrollTop = msgList.scrollHeight - msgList.clientHeight;  //ca devrait marcher mais non x) pour scroller auto
