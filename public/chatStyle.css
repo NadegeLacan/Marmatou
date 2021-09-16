@@ -71,6 +71,7 @@ li a{
 
     display: flex;
     flex-direction: column;
+    align-content: stretch;
 
     border: #5e5e5e 2px solid;
     border-radius: 0 8% 8% 0;
@@ -82,6 +83,11 @@ li a{
 
     display: flex;
     flex-direction: row;
+}
+
+h3{
+    color: #FB9300;
+    font-weight: bold;
 }
 
 .msgListContainer{
