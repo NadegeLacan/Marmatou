@@ -1,0 +1,196 @@
+/************ GENERAL PARAMETERS AND BACKGROUND *************/
+body {
+    background-image: linear-gradient(to right top, #343F56, #F54748, #FB9300);
+    background-attachment: fixed;
+    background-repeat: no-repeat ;
+
+    padding: 2% 10%;
+
+    font-family: Arial;
+    color: #343F56;
+    text-shadow: -1px 1px 1px #5e5e5e;;
+}
+
+
+/************ THE MIDDLE PART WITH WHITE BACKGROUND ************/
+#blocPage {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    border: 3px #F5E6CA solid;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px #343F56;
+    padding: 5%;
+}
+
+#logo {
+    width: 30%;
+    align-self: center;
+}
+
+/*** Bloc connexion ***/
+fieldset legend {
+    margin: auto;
+    padding: 2%;
+    font-weight: bold;
+    color: #F54748;
+    font-family: "MV Boli", Arial;
+    font-size: 200%;
+}
+
+
+fieldset{
+    border: 3px #F5E6CA solid;
+    border-radius: 20px;
+    box-shadow: 0 5px 5px #5e5e5e;
+    display: flex;
+    flex-direction: column;
+}
+
+/*** Inside bloc connexion ***/
+#blocIdAndPasswordInIndex{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    align-self: center;
+    margin: 5%;
+}
+
+label, #pseudoConnexion, #pwdConnexion{
+    margin: 3%;
+    align-self: end;
+    font-size: 130%;
+}
+
+#pseudoConnexion, #pwdConnexion{
+    border: 1px solid #FB9300;
+    border-radius: 5px;
+    padding: 2% 5%;
+}
+
+.starRequired{
+    color: #F54748;
+}
+
+#blocButtonsInIndex{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Buttons */
+#validationConnexion, #creationCompte{
+    padding: 2%;
+    margin: 2%;
+    border: 2px solid #F5E6CA;
+    border-radius: 20px;
+    box-shadow: 0 3px 5px #5e5e5e;
+    background-image: linear-gradient(to right bottom, rgba(245, 71, 72, 0.35), rgba(251, 147, 0, 0.32), rgba(245, 71, 72, 0.45));
+    font-weight: bold;
+    font-size: 120%;
+    color: #F54748;
+    text-shadow: #FFFFFF 0 0 5px;
+}
+
+#validationConnexion:hover, #creationCompte:hover{
+    border: 2px solid #FB9300;
+    background-color: #FB9300;
+    color: white;
+    text-shadow: #343F56 0 0 2px;
+}
+
+#champsObligatoires{
+    text-shadow: none;
+    font-size: 80%;
+    align-self: end;
+    font-style: italic;
+}
+
+/************ BOTTOM BLOC PAGE ************/
+#codeFormat {
+    align-self: end;
+    margin: 5%;
+    border: 2px solid #F5E6CA;
+    border-radius: 20%;
+    box-shadow: 0 2px 3px #5e5e5e;
+    font-style: italic;
+}
+
+#codeFormat:hover{
+    color: #FB9300;
+}
+
+
+
+/**************************************************/
+/************ RESPONSIVE SMALL SCREENS ************/
+/**************************************************/
+@media all and (max-device-width: 480px)
+{
+    body{
+        padding: 0;
+    }
+
+    #blocPage{
+        padding: 0;
+        margin: 0;
+    }
+
+    fieldset{
+        box-shadow: 0 5px 10px #dad7d7;
+    }
+
+    fieldset legend{
+        font-size: 120%;
+        margin-bottom: 10%;
+    }
+
+    #blocIdAndPasswordInIndex{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        margin-left: -20%;
+    }
+
+    label{
+        font-weight: bold;
+        text-shadow: none;
+    }
+
+    label, #pseudoConnexion, #pwdConnexion{
+        align-self: flex-start;
+        font-size: 100%;
+    }
+
+    #pseudoConnexion, #pwdConnexion{
+        margin-bottom: 10%;
+    }
+
+    /* Buttons */
+    #validationConnexion, #creationCompte{
+        padding: 5%;
+        margin-bottom: 8%;
+        font-size: 100%;
+    }
+
+    #codeFormat {
+        align-self: center;
+        margin: 10%;
+    }
+
+    #champsObligatoires{
+        margin-top: 10%;
+    }
+
+}
+
+
+
+
+/* COLORS
+Dark : #343F56
+Pink : #F54748
+Orange : #FB9300
+Light : #F5E6CA
+ */

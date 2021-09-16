@@ -1,0 +1,22 @@
+body{
+
+}
+
+/************ MENU *************/
+nav{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    background-color: #F5E6CA;
+}
+
+#logo{
+    width: 8%;
+    margin: 1%;
+}
+
+#btAccueil, #btSalons, #btParametres, #btProfil, #Deconnexion{
+    margin: 1% 1%;
+    width: 4%;
+}
