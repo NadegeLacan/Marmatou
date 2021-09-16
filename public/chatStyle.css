@@ -1,22 +1,49 @@
 body{
-
+    display: flex;
+    flex-direction: row;
 }
 
 /************ MENU *************/
-nav{
+nav ul{
+    height: 100vh;
+
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    justify-items: center;
+
+    padding: 0;
+    margin: 0;
 
     background-color: #F5E6CA;
+    border: #F54748 solid 2px;
+    border-radius: 50px 0 0 50px;
+}
+
+nav ul li{
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+li a{
+    display: flex;
+    justify-content: center;
 }
 
 #logo{
-    width: 8%;
-    margin: 1%;
+    align-self: center;
+    width: 50%;
 }
 
 #btAccueil, #btSalons, #btParametres, #btProfil, #Deconnexion{
-    margin: 1% 1%;
-    width: 4%;
+    align-self: center;
+    width: 40%;
 }
+
+#btAccueil:hover, #btSalons:hover, #btParametres:hover, #btProfil:hover, #Deconnexion:hover{
+    transform: scale(1.1);
+}
+
+/************ SALONS *************/
+
