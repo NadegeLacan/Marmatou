@@ -78,13 +78,19 @@ li a{
 }
 
 #tchatTools{
+    flex-grow: 1;
 
+    display: flex;
+    flex-direction: row;
 }
 
 .msgListContainer{
+    flex-grow: 4;
 
+    display: flex;
+    flex-direction: column;
 }
 
 .envoiMsg{
-
+    flex-grow: 1;
 }
