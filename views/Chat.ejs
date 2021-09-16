@@ -11,6 +11,7 @@
 
   <body>
 
+<!-------------------------------------- MENU -------------------------------------->
     <nav>
         <ul>
             <li>
@@ -33,6 +34,10 @@
             </li>
         </ul>
     </nav>
+<!-------------------------------------- END menu -------------------------------------->
+
+
+<!-------------------------------------- SALONS -------------------------------------->
 
     <div class="salonContainer">
       <table>
@@ -56,158 +61,179 @@
         <input type="submit" id="creerSalon" />
       </form>
     </div>
-
-    <div class="msgListContainer">
-      <ul class="listeMsg"></ul>
-      <!-- actualiser historique messages en  fonction du groupe choisi -->
-    </div>
-
-    <div class="envoiMsg">
-      <form class="submitMsg">
-        <label for="message">Message</label>
-        <input
-          type="text"
-          name="message"
-          id="message"
-          placeholder="Message"
-          maxlength="300"
-          required
-        />
-
-        <input type="submit" name="envoiMsg" id="envoiMsg" value="Envoyer" />
-      </form>
-    </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-          const sessionId = <%= id %>;
-          const socket = io("http://localhost:8080", {query:{id: sessionId}});
-          const msgForm = document.querySelector(".submitMsg");
-          const msgList = document.querySelector(".listeMsg");
-          const msg = document.querySelector("#message");
-          const salon = document.querySelector(".salon");
-          const buttonSalon = document.querySelector("#creerSalon");
-          const salonName = document.querySelector("#salonName");
-          let salonId= 1 ;
-
-          // FETCH and construct INITIAL DATA
-          fetchData(salonId);
-
-          // button de submit message
-          msgForm.addEventListener("submit", (e)=>{
-            e.preventDefault();
-            socket.emit("newMsg", {msg:msg.value, salonId:salonId} );
-            // createMsg(msg.value, sessionId, salon);
-            // J'AVAIS UN BUG OU APRES AVOIR CHANGER DE SALON LE LE BRODCAST D'UNE MESSAGE
-            // SE FAISAIT A ELE MEME CE QUE FAISAIT CREATEMESSAGE() COURIR 2 FOIS
-            // J'AI PAS TROUVE LA RAISON DU COUP CREATEMESSAGE SERAIT EXECUTE JUSTE QUAND ON REÇOIT UNE MESSAGE 
-            // COTE SERVEUR TOUTES LES MESSAGES SERONT BROADCAST A TOUTES LES SOCKETS DANS LE SALON INCLUS L'EMETEUR
-            msg.value="";
-          });
-
-          //button de creer salon
-
-          buttonSalon.addEventListener("click", (e)=>{
-            e.preventDefault();
-            if(salonName.value==="") return; // vu que required dans l'input n'a pas envie de marcher
-            socket.emit("createSalon", {name: salonName.value});
-            salonName.value="";
-          })
+<!-------------------------------------- END salons -------------------------------------->
 
 
-          // SOCKETS
+<!-------------------------------------- BLOC MESSAGES -------------------------------------->
 
-          socket.on("msgIncoming", ({msg, senderId, senderPseudo})=> createMsg(msg, senderId, senderPseudo));
+    <div id="blocMessages">
 
-          socket.on("newSalon", ({name, id})=> {
-            createSalon(name, id);
-          });
+<!-------- Tools bar -------->
+        <div id="tchatTools">
+
+        </div>
 
 
-          // fonctions de creer message/ salon, fetch
+<!-------- View messages -------->
+        <div class="msgListContainer">
+          <ul class="listeMsg"></ul>
+          <!-- actualiser historique messages en  fonction du groupe choisi -->
+        </div>
 
-          function createSalon(name, id){
-            const group= document.createElement("td");
-            const buttonGroup= document.createElement("button");
-            buttonGroup.innerText= name;
 
-            buttonGroup.addEventListener("click", ()=>{
-              salonId= id;
-              fetchMessages(id);
-              socket.emit("changeSalon", {salonId:id})
+<!-------- Send message -------->
+        <div class="envoiMsg">
+          <form class="submitMsg">
+            <label for="message">Message</label>
+            <input
+              type="text"
+              name="message"
+              id="message"
+              placeholder="Message"
+              maxlength="300"
+              required
+            />
+
+            <input type="submit" name="envoiMsg" id="envoiMsg" value="Envoyer" />
+          </form>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+              const sessionId = <%= id %>;
+              const socket = io("http://localhost:8080", {query:{id: sessionId}});
+              const msgForm = document.querySelector(".submitMsg");
+              const msgList = document.querySelector(".listeMsg");
+              const msg = document.querySelector("#message");
+              const salon = document.querySelector(".salon");
+              const buttonSalon = document.querySelector("#creerSalon");
+              const salonName = document.querySelector("#salonName");
+              let salonId= 1 ;
+
+              // FETCH and construct INITIAL DATA
+              fetchData(salonId);
+
+              // button de submit message
+              msgForm.addEventListener("submit", (e)=>{
+                e.preventDefault();
+                socket.emit("newMsg", {msg:msg.value, salonId:salonId} );
+                // createMsg(msg.value, sessionId, salon);
+                // J'AVAIS UN BUG OU APRES AVOIR CHANGER DE SALON LE LE BRODCAST D'UNE MESSAGE
+                // SE FAISAIT A ELE MEME CE QUE FAISAIT CREATEMESSAGE() COURIR 2 FOIS
+                // J'AI PAS TROUVE LA RAISON DU COUP CREATEMESSAGE SERAIT EXECUTE JUSTE QUAND ON REÇOIT UNE MESSAGE
+                // COTE SERVEUR TOUTES LES MESSAGES SERONT BROADCAST A TOUTES LES SOCKETS DANS LE SALON INCLUS L'EMETEUR
+                msg.value="";
+              });
+
+              //button de creer salon
+
+              buttonSalon.addEventListener("click", (e)=>{
+                e.preventDefault();
+                if(salonName.value==="") return; // vu que required dans l'input n'a pas envie de marcher
+                socket.emit("createSalon", {name: salonName.value});
+                salonName.value="";
+              })
+
+
+              // SOCKETS
+
+              socket.on("msgIncoming", ({msg, senderId, senderPseudo})=> createMsg(msg, senderId, senderPseudo));
+
+              socket.on("newSalon", ({name, id})=> {
+                createSalon(name, id);
+              });
+
+
+              // fonctions de creer message/ salon, fetch
+
+              function createSalon(name, id){
+                const group= document.createElement("td");
+                const buttonGroup= document.createElement("button");
+                buttonGroup.innerText= name;
+
+                buttonGroup.addEventListener("click", ()=>{
+                  salonId= id;
+                  fetchMessages(id);
+                  socket.emit("changeSalon", {salonId:id})
+                })
+                group.append(buttonGroup);
+                salon.append(group);
+              }
+
+              function createMsg(msg, id, pseudo){
+                let li = document.createElement("li");
+                if(id != sessionId){
+                  li.classList.add("receivedMsg");
+                  let span = document.createElement("span");
+                  span.innerText= pseudo;
+                  span.classList.add("sender");
+                  li.append(span);
+                }else{
+                  li.classList.add("ownMsg" );
+                }
+                let text = document.createTextNode(msg);
+
+                li.append(text);
+                msgList.append(li);
+                // msgList.scrollTop = msgList.scrollHeight - msgList.clientHeight;  //ca devrait marcher mais non x) pour scroller auto
+                window.scrollTo(0,document.body.scrollHeight); // ca marche avec ca, mais si on met du scroll que dans la msgList va falloir le modifier
+              }
+
+              // peut être mettre un
+
+              //html {
+              //  scroll-behavior: smooth;
+              //}
+
+              // dans le css pour scroller jolie xd
+
+              async function fetchSalons(){
+                await fetch("http://localhost:8080/salons", {
+                method: "GET",
+                headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
             })
-            group.append(buttonGroup);
-            salon.append(group);
-          }
+              .then((res) => res.json())
+              .then((data) => {
 
-          function createMsg(msg, id, pseudo){
-            let li = document.createElement("li");
-            if(id != sessionId){ 
-              li.classList.add("receivedMsg");
-              let span = document.createElement("span");
-              span.innerText= pseudo;
-              span.classList.add("sender");
-              li.append(span);
-            }else{
-              li.classList.add("ownMsg" );
+                data.forEach(element => {
+                  createSalon(element.nom, element.id);
+                });
+              });
             }
-            let text = document.createTextNode(msg);
 
-            li.append(text);
-            msgList.append(li);
-            // msgList.scrollTop = msgList.scrollHeight - msgList.clientHeight;  //ca devrait marcher mais non x) pour scroller auto
-            window.scrollTo(0,document.body.scrollHeight); // ca marche avec ca, mais si on met du scroll que dans la msgList va falloir le modifier
+
+              async function  fetchMessages(salonId){
+                msgList.innerHTML= "";
+                await fetch("http://localhost:8080/messages", {
+                method: "GET",
+                headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                receiver: sessionId,
+                salon:salonId
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => {
+
+                data.forEach(element=>{
+                  createMsg(element.contenu, element.id_user, element.pseudo);
+                });
+              });
           }
 
-          // peut être mettre un 
+          async function fetchData(salonId){
+            fetchMessages(salonId);
+            fetchSalons();
+          }
 
-          //html {
-          //  scroll-behavior: smooth;
-          //}
-
-          // dans le css pour scroller jolie xd
-
-          async function fetchSalons(){
-            await fetch("http://localhost:8080/salons", {
-            method: "GET",
-            headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            
-            data.forEach(element => {
-              createSalon(element.nom, element.id);
-            });
-          });
-        }
-
-
-          async function  fetchMessages(salonId){
-            msgList.innerHTML= "";
-            await fetch("http://localhost:8080/messages", {
-            method: "GET",
-            headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            receiver: sessionId,
-            salon:salonId
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-           
-            data.forEach(element=>{
-              createMsg(element.contenu, element.id_user, element.pseudo);
-            });
-          });
-      }
-
-      async function fetchData(salonId){
-        fetchMessages(salonId);
-        fetchSalons();
-      }
     </script>
+
+    </div>  <!-- fin div blocMessages -->
+<!-------------------------------------- END bloc messages -------------------------------------->
+
+
   </body>
 </html>
