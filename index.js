@@ -48,7 +48,7 @@ connection.connect((err) => {
 app.get(`/`, (req,res)=>{
   res.render("index.ejs", {info:""});
 }).get('/connection/:id', (req, res) => {
-  res.render(__dirname + '/Chat.ejs', { id: req.params.id});
+  res.render(__dirname + '/Chat.ejs', { id: req.params.id},{ id: req.params.id});
 }).post("/connection", (req,res)=>{
   console.log(req.body);
 
@@ -114,11 +114,14 @@ app.get(`/`, (req,res)=>{
 
   if (hasError ) {
       return handleError(err, res);
-  } else {
-      res.status(200)
-          .contentType("text/plain")
-          .end("File uploaded!");
+  } else { 
+    res.redirect("views/Chat.ejs");
+    // res.render(__dirname + '/Chat.ejs', { id: req.params.id},{ id: req.params.id});
+    // res.status(200)
+    //     .contentType("text/plain")
+    //     .end("File uploaded!");
   }
+   
 });
 
    

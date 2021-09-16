@@ -12,12 +12,12 @@
 
   <form method="POST" action="addProfilpic" id="photo" enctype="multipart/form-data">
     <input type="file" name="inputPhoto" > 
-    <input type="hidden" name="prodId">
+    <input type="hidden" name="prodId" value="<%= id %>">
     <input type="submit"> 
     
   </form> 
 
-
+  <img src="/media/profil-pic/<%= id %>.jpg" alt="photo de profil">
   <div><form></form></div>
   <div></div>
   
