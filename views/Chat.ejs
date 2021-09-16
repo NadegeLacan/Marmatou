@@ -1,24 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="chatStyle.css" />
+    <title>BlablaTchat Salons</title>
   </head>
-  <body>
-    <h2>Chat</h2>
 
-    <div class="menu">
-      <a href="" title="Créer un compte" id="creerCompte">Créer un compte</a>
-      <a href="" title="Connexion" id="connexion">Se connecter</a>
-      <a href="" title="Déconnexion" id="deconnexion">Se déconnecter</a>
-    </div>
+
+  <body>
+
+    <nav>
+        <ul>
+            <li>
+              <img src="../medias/icons/logoSmall.png" alt="logo de BlablaTchat" id="logo" />
+            </li>
+            <li>
+              <a href="" title="Accueil"><img src="../medias/icons/index.png" alt="Accueil" id="btAccueil" /></a>
+            </li>
+            <li>
+              <a href="" title="Salons"><img src="../medias/icons/blabla.png" alt="Salons" id="btSalons" /></a>
+            </li>
+            <li>
+              <a href="" title="Paramètres"><img src="../medias/icons/wheel.png" alt="Paramètres" id="btParametres" /></a>
+            </li>
+            <li>
+              <a href="" title="Profil"><img src="../medias/icons/userLongHair.png" alt="Profil" id="btProfil" /></a>
+            </li>
+            <li>
+              <a href="" title="Déconnexion" id="deconnexion"><img src="../medias/icons/deconnexion.png" alt="Deconnexion" id="Deconnexion" /></a>
+            </li>
+        </ul>
+    </nav>
 
     <div class="salonContainer">
       <table>
         <caption>
-          Salons
+          <h2>Salons</h2>
         </caption>
         <tr class="salon"></tr>
 
@@ -33,6 +52,7 @@
           placeholder="Nom salon"
           required
         />
+
         <input type="submit" id="creerSalon" />
       </form>
     </div>

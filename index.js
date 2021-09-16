@@ -15,7 +15,7 @@ app
   .use(express.static(public));
 app.use(express.urlencoded({ extended: true }));
 
-//connect db
+// connect db
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",

@@ -3,22 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=non">
-    <title>Blabla Tchat</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>BlablaTchat Connexion</title>
 </head>
+
 <body>
-    
-<form method="POST" action="/connection" id="formConnexion">
-    <fieldset>
-        <legend>CONNEXION</legend>
-        <input type="pseudo" name="pseudoConnexion" id="pseudoConnexion" placeholder="pseudo" required/>
-        <input type="password" name="pwdConnexion" id="pwdConnexion" placeholder="mot de passe" minlength="8" required/>
-        <input type="submit" name="validationConnexion" id="validationConnexion" value="Login"/>
-        <input type = "submit" name="creationCompte" id="creationCompte" value="Sign Up"/>
-    </fieldset>
-</form>
-<% if (info) { %>
-    <h2><%= info %></h2>
-  <% } %>
-<script src="./scripts/connect.js"></script>
+    <div id="blocPage">
+
+
+        <img src="../medias/logoEcritTransp.png" alt="logo de BlablaTchat" id="logo" />
+
+
+        <form method="POST" action="/connection" id="formConnexion">
+            <fieldset>
+                <legend>CONNEXION</legend>
+                <div id="blocIdAndPasswordInIndex">
+                    <label for="">Pseudo<span class="starRequired"> *</span> :</label>
+                    <input type="pseudo" name="pseudoConnexion" id="pseudoConnexion" placeholder="pseudo" required/>
+                    <label for="">Mot de passe<span class="starRequired"> *</span> :</label>
+                    <input type="password" name="pwdConnexion" id="pwdConnexion" placeholder="******" minlength="8" required/>
+                </div>
+                <div id="blocButtonsInIndex">
+                    <input type="submit" name="validationConnexion" id="validationConnexion" value="Se connecter"/>
+                    <input type="submit" name="creationCompte" id="creationCompte" value="Créer un compte"/>
+                </div>
+                <p id="champsObligatoires"><span class="starRequired">*</span>Champs obligatoires</p>
+            </fieldset>
+        </form>
+
+
+        <% if (info) { %>
+            <h2><%= info %></h2>
+          <% } %>
+        <script src="./scripts/connect.js"></script>
+    </div>
 </body>
+
 </html>
